@@ -1,0 +1,17 @@
+{
+    "name": "dittertp/ExtDirect",
+    "description": "Sencha Extjs ExtDirect implementation",
+    "keywords": ["sencha","extjs", "extdirect"],
+    "type": "library",
+    "license": "Open Software License (OSL 3.0)",
+    "authors": [
+        {
+            "name": "Philipp Dittert"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "ExtDirect": "src/"
+        }
+    }
+}
