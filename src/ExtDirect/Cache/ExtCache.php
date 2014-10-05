@@ -21,6 +21,9 @@
 
 namespace ExtDirect\Cache;
 
+use ExtDirect\Exceptions\ExtDirectException;
+use ExtDirect\Utils\Keys;
+
 /**
  * class ExtCache
  *
@@ -49,18 +52,6 @@ class ExtCache
         $this->key = $key;
     }
 
-    /**
-     * checks if action exists in api
-     *
-     * @param string $action the ext direct request action
-     *
-     * @return bool
-     */
-    public function ActionExists($action)
-    {
-        $api = $this->getApi();
-    }
-
     protected function getApi()
     {
         $api = apc_fetch($this->getKey());
@@ -78,4 +69,83 @@ class ExtCache
     {
         return $this->key;
     }
-} 
+
+    /**
+     * Checks if something is cached
+     *
+     * @return bool
+     */
+    public function isCached()
+    {
+        // if action array is cached return true
+        if ($this->get(Keys::EXT_ACTION)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns a part of cached array
+     *
+     * @param string $key cache category (action, namespace...)
+     *
+     * @return bool
+     */
+    protected function get($key)
+    {
+        $cache = apc_fetch($this->getKey());
+        if (!is_array($cache)) {
+            return false;
+        } else {
+            if (isset($cache[$key])) {
+                return $cache[$key];
+            }
+            return false;
+        }
+    }
+
+    /**
+     * persists given value in cache
+     *
+     * @param string $key the cache category (array key)
+     * @param mixed  $value the value to be cached
+     *
+     * @return void
+     */
+    protected function set($key, $value)
+    {
+        $cache = apc_fetch($this->getKey());
+
+        $cache[Keys::EXT_ACTION] = $value;
+
+        apc_store($this->getKey(), $cache);
+    }
+
+    /**
+     * Returns array containing cached list of classes and actions which are remotable
+     *
+     * @return bool
+     */
+    public function getActions()
+    {
+        return $this->get(Keys::EXT_ACTION);
+    }
+
+    /**
+     * persists list of actions in cache
+     *
+     * @param string $actions the actions which should be cached
+     *
+     * @return void
+     * @throws \ExtDirect\Exceptions\ExtDirectException
+     */
+    public function cacheActions($actions)
+    {
+        if (!is_array($actions)) {
+            throw new ExtDirectException("unable to cache a non array value as actions");
+        }
+        $this->set(Keys::EXT_ACTION, $actions);
+    }
+
+
+}

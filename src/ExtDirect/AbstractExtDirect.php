@@ -23,6 +23,7 @@ namespace ExtDirect;
 
 use ExtDirect\Cache\ExtCache;
 use ExtDirect\Request\Parameters;
+use ExtDirect\Annotations\Parser;
 
 /**
  * class AbstractExtDirect
@@ -155,11 +156,35 @@ abstract class AbstractExtDirect
         return $this->appNamespace;
     }
 
+    /**
+     * Returns a array containing all remotable actions
+     *
+     * @return bool|void
+     */
     public function getActions()
     {
         if ($this->useCache()) {
-
+            if ($this->getExtCache()->isCached()) {
+                return $this->getExtCache()->getActions();
+            }
         }
 
+        $actions = $this->generateActions();
+
+        if ($this->useCache()) {
+            $this->getExtCache()->cacheActions($actions);
+        }
+
+        return $actions;
+    }
+
+    protected function generateActions()
+    {
+        $parser = new Parser();
+        $parser->setNamespace($this->getAppNamespace());
+
+        $list = $parser->run();
+
+        return $list;
     }
 }
