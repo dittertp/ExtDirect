@@ -34,12 +34,6 @@ namespace ExtDirect;
 
 class ExtDirectRequest extends AbstractExtDirect
 {
-
-    /**
-     * @var string
-     */
-    protected $appNamespace;
-
     /**
      * @var ExtDirectResponse;
      */
@@ -85,28 +79,6 @@ class ExtDirectRequest extends AbstractExtDirect
     }
 
     /**
-     * Sets the target application namespace
-     *
-     * @param string $namespace the basic namespace to target classes
-     *
-     * @return void
-     */
-    public function setAppNamespace($namespace)
-    {
-        $this->appNamespace = $namespace;
-    }
-
-    /**
-     * Returns the basic application namespace
-     *
-     * @return string
-     */
-    protected function getAppNamespace()
-    {
-        return $this->appNamespace;
-    }
-
-    /**
      * executing the request
      *
      * @return void
@@ -116,6 +88,7 @@ class ExtDirectRequest extends AbstractExtDirect
         // Build Path to our applicationcontroller
         $controller = $this->getParameters()->getAction() . 'Controller';
         $action = $this->getParameters()->getMethod();
+
         $className = $this->getApplicationPath() . $controller;
 
         $reflectionClass = new \ReflectionClass($className);

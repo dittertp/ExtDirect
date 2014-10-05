@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ExtDirect\RequestParameters
+ * ExtDirect\Request\Parameters
  *
  * NOTICE OF LICENSE
  *
@@ -19,12 +19,12 @@
  * @link      http://www.appserver.io
  */
 
-namespace ExtDirect;
+namespace ExtDirect\Request;
 
 use ExtDirect\Exceptions\ExtDirectException;
 
 /**
- * class RequestParameters
+ * class Parameters
  *
  * @category  ExtDirect
  * @package   TechDivision_ExtDirect
@@ -34,7 +34,7 @@ use ExtDirect\Exceptions\ExtDirectException;
  * @link      http://www.appserver.io
  */
 
-class RequestParameters
+class Parameters
 {
     /**
      * @var array

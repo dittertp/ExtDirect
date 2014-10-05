@@ -22,6 +22,7 @@
 namespace ExtDirect;
 
 use ExtDirect\Exceptions\ExtDirectException;
+use ExtDirect\Request\Parameters;
 
 /**
  * class ExtDirect
@@ -37,6 +38,11 @@ use ExtDirect\Exceptions\ExtDirectException;
 class ExtDirect
 {
     /**
+     * @var boolean
+     */
+    protected $useCache;
+
+    /**
      * @var string
      */
     protected $applicationPath;
@@ -50,6 +56,16 @@ class ExtDirect
      * @var ExtDirectResponse
      */
     protected $response;
+
+    /**
+     * constructor
+     *
+     * @param bool $useCache value if cache should used
+     */
+    public function __construct($useCache = true)
+    {
+        $this->setCacheState($useCache);
+    }
 
     /**
      * Sets Application path
@@ -127,10 +143,9 @@ class ExtDirect
      */
     protected function process(array $request)
     {
-        $request = new ExtDirectRequest();
+        $request = new ExtDirectRequest($this->useCache());
         $response = new ExtDirectResponse();
-        $requestParameters = new RequestParameters();
-
+        $requestParameters = new Parameters();
         // parameter validation here
         $requestParameters->setParameters($request);
 
@@ -174,4 +189,32 @@ class ExtDirect
         }
         return false;
     }
+
+    /**
+     * Sets value if cache should be used or not
+     *
+     * @param boolean $useCache the cache state
+     *
+     * @return void
+     */
+    protected function setCacheState($useCache)
+    {
+        if (is_bool($useCache)) {
+            $this->useCache = $useCache;
+        } else {
+            error_log("ExtDirect: useCache not boolean - enabling cache by default");
+            $this->useCache = true;
+        }
+    }
+
+    /**
+     * returns boolean cache state
+     *
+     * @return boolean
+     */
+    protected function useCache()
+    {
+        return $this->useCache;
+    }
+
 }
