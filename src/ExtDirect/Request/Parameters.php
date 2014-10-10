@@ -39,7 +39,7 @@ class Parameters
     /**
      * @var array
      */
-    protected $requiredParameters = array("type", "id", "action", "method", "data");
+    protected $requiredParameters = array("type", "tid", "action", "method", "data");
 
     /**
      * @var string
@@ -192,7 +192,7 @@ class Parameters
      * @param array $request the ext direct as array
      *
      * @return void
-     * @throws Exceptions\ExtDirectException
+     * @throws ExtDirectException
      */
     public function setParameters(array $request)
     {

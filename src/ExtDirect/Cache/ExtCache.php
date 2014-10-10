@@ -141,6 +141,7 @@ class ExtCache
      */
     public function cacheActions($actions)
     {
+        error_log(print_r($actions,true));
         if (!is_array($actions)) {
             throw new ExtDirectException("unable to cache a non array value as actions");
         }

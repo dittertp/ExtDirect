@@ -9,9 +9,14 @@
             "name": "Philipp Dittert"
         }
     ],
+    "require":
+    {
+        "doctrine/common": "*"
+    },
     "autoload": {
         "psr-0": {
-            "ExtDirect": "src/"
+            "ExtDirect": "src/",
+            "Application": "test/"
         }
     }
 }

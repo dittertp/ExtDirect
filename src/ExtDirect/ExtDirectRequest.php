@@ -85,6 +85,7 @@ class ExtDirectRequest extends AbstractExtDirect
      */
     public function run()
     {
+        /*
         // Build Path to our applicationcontroller
         $controller = $this->getParameters()->getAction() . 'Controller';
         $action = $this->getParameters()->getMethod();
@@ -105,5 +106,8 @@ class ExtDirectRequest extends AbstractExtDirect
             $result = $reflectionMethod->invoke($controllerInstance);
         }
         $this->getResponse()->setData($result);
+        */
+
+        $this->getResponse()->setResult(array("ads"=>"asd"));
     }
 }

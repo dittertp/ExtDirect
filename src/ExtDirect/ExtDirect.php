@@ -37,6 +37,12 @@ use ExtDirect\Request\Parameters;
 
 class ExtDirect
 {
+
+    /**
+     * @var ExtDirectApi
+     */
+    protected $api;
+
     /**
      * @var boolean
      */
@@ -50,7 +56,7 @@ class ExtDirect
     /**
      * @var array
      */
-    protected $callMethods;
+    protected $callMethods = array();
 
     /**
      * @var ExtDirectResponse
@@ -125,7 +131,7 @@ class ExtDirect
                 try {
                     $result = $this->process($request);
                 } catch (ExtDirectException $e) {
-                    error_log("ExtDirect: error in batch request - {$e->getMessage()}");
+                    error_log("ExtDirect: error in request - {$e->getMessage()}");
                 }
             }
             $this->setResponse($result);
@@ -137,17 +143,17 @@ class ExtDirect
     /**
      * process a single ext direct request
      *
-     * @param array $request the ext direct request as array
+     * @param array $requestParams the ext direct request as array
      *
      * @return array
      */
-    protected function process(array $request)
+    protected function process(array $requestParams)
     {
         $request = new ExtDirectRequest($this->useCache());
         $response = new ExtDirectResponse();
         $requestParameters = new Parameters();
         // parameter validation here
-        $requestParameters->setParameters($request);
+        $requestParameters->setParameters($requestParams);
 
         // inject parameters instance into request and response object to get access to all relevant params
         $request->injectParameters($requestParameters);
@@ -159,7 +165,8 @@ class ExtDirect
 
         $request->run();
 
-        return $response->asArray();
+        //return $response->asArray();
+        return $response;
     }
 
     /**
@@ -172,6 +179,16 @@ class ExtDirect
     protected function setResponse(ExtDirectResponse $response)
     {
         $this->response = $response;
+    }
+
+    /**
+     * Returns response instance
+     *
+     * @return ExtDirectResponse
+     */
+    public function getResponse()
+    {
+        return $this->response;
     }
 
     /**
@@ -215,6 +232,14 @@ class ExtDirect
     protected function useCache()
     {
         return $this->useCache;
+    }
+
+    public function getApi()
+    {
+        if ($this->api === null) {
+            $this->api = new ExtDirectApi();
+        }
+        return $this->api;
     }
 
 }

@@ -1,36 +1,17 @@
 <?php
-
 /**
- * ExtDirect\Annotations\Parser
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- *
- * PHP version 5
- *
- * @category  ExtDirect
- * @package   TechDivision_ExtDirect
- * @author    Philipp Dittert <pd@techdivision.com>
- * @copyright 2014 TechDivision GmbH <info@techdivision.com>
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      http://www.appserver.io
+ * Created by PhpStorm.
+ * User: dittertp
+ * Date: 10.10.14
+ * Time: 09:55
  */
 
 namespace ExtDirect\Annotations;
 
-/**
- * class Parser
- *
- * @category  ExtDirect
- * @package   TechDivision_ExtDirect
- * @author    Philipp Dittert <pd@techdivision.com>
- * @copyright 2014 TechDivision GmbH <info@techdivision.com>
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      http://www.appserver.io
- */
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use ReflectionClass;
+use Application\DemoApp;
 
 class Parser
 {
@@ -84,109 +65,45 @@ class Parser
         $list = $this->getClassList();
 
         foreach ($list as $class) {
+
             $this->validateClass($class);
         }
     }
 
     protected function validateClass($class)
     {
-        if (class_exists($class)) {
-            $rc = new \ReflectionClass($class);
-            $doc = $rc->getDocComment();
-            $this->getRemotableMethods($rc);
-        } else {
-            error_log("Parser: Class does not exist");
+
+        $annotationReader = new AnnotationReader();
+
+        AnnotationRegistry::registerLoader('class_exists');
+
+        if (!class_exists("\\".$class)) {
+            error_log(" '{$class}' does not exist!");
         }
 
-    }
+        //Get class annotation
+        $reflectionClass = new ReflectionClass($class);
+        $classAnnotation = $annotationReader->getClassAnnotation($reflectionClass, "ExtDirect\Annotations\Direct");
+        //$classAnnotations = current($classAnnotations);
 
-    protected function getRemotableMethods(\ReflectionClass $rc)
-    {
-        $methods = array();
-        foreach ($rc->getMethods() as $method) {
+        if ($classAnnotation instanceof \ExtDirect\Annotations\Direct) {
 
-            $methodInfo = $this->validateMethod($method);
-            if ($methodInfo) {
-                array( 'name' => $method->getName(), 'len' => $method->getNumberOfParameters() );
-            }
-        }
+            $classAnnotation->setClassName($class);
 
-    }
+            error_log(var_export($classAnnotation,true));
 
-    protected function validateMethod(\ReflectionMethod $method)
-    {
-        // only public method are remotable
-        if (!$method->isPublic()) {
-            return false;
-        }
+            foreach ($reflectionClass->getMethods() as $reflectionMethod) {
 
-        $doc = $method->getDocComment();
+                $methodAnnotation = $annotationReader->getMethodAnnotation($reflectionMethod, "ExtDirect\Annotations\Remotable");
 
-
-
-
-    }
-
-    /**
-     * Parse docComment for given tag
-     *
-     * @param string $doc the doc comment
-     * @param string $tag the tag to find
-     *
-     * @return mixed
-     */
-    protected function parseDocComment($doc, $tag)
-    {
-        $matches = array();
-        preg_match("/".$tag.":(.*)(\\r\\n|\\r|\\n)/U", $doc, $matches);
-        if (isset($matches[1])) {
-
-            $tagLine = trim($matches[1]);
-            $tagParams = $this->parseCommentTag($tagLine);
-
-            if ($tagParams !== false) {
-
+                if ($methodAnnotation instanceof \ExtDirect\Annotations\Remotable) {
+                    error_log(var_export($methodAnnotation,true));
+                }
             }
 
 
-        } else {
-            return false;
         }
 
-
-
-
-    }
-
-    protected function parseCommentTag($tag)
-    {
-        $tag = $this->stripBrackets($tag);
-
-        $tagParams = explode(",", $tag);
-
-        foreach ($tagParams as $param) {
-            $tmp = explode("=", $param);
-
-
-        }
-
-    }
-
-    protected function stripBrackets($tag)
-    {
-        if (($start = strpos($tag, "(")) === false) {
-            return false;
-        }
-
-        $tag = substr($tag, $start);
-
-        if (($end = strpos($tag, ")")) === false) {
-            return false;
-        }
-
-        $strippedString = substr($tag, 0, $start);
-
-        return $strippedString;
     }
 
     /**
@@ -258,9 +175,13 @@ class Parser
             $elementPath = $dir . DIRECTORY_SEPARATOR . $element;
 
             if (is_file($elementPath)) {
-                $fileExtension = pathinfo($element, PATHINFO_EXTENSION);
-                if (in_array($fileExtension, $this->getAllowedFileExtensions())) {
-                    $result[] = $elementPath;
+                //$fileExtension = pathinfo($element, PATHINFO_EXTENSION);
+
+                $fileInfo = pathinfo($element);
+                if (in_array($fileInfo['extension'], $this->getAllowedFileExtensions())) {
+                    error_log(print_r($fileInfo,true));
+                    $result[] = $this->getNamespace() . "\\" . $fileInfo['filename'];
+                    //$result[] = $elementPath;
                 }
             }
 
@@ -268,4 +189,4 @@ class Parser
 
         return $result;
     }
-}
+} 
