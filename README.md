@@ -23,7 +23,7 @@ $api->setApplicationPath("Application");
 $jsonApi = $api->getApi();
 ```
 
-### ExtDirect Batched Request Beispiel:
+### ExtDirect Request Beispiel:
 
 ``` php
 <?php
