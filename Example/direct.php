@@ -12,13 +12,14 @@ $request['method'] = "getTree";
 $request['data'] = array("asd"=>"gfs");
 
 $direct = new ExtDirect();
-$direct->setApplicationPath("Application");
+$direct->setApplicationPath("ExtDirectDemoApp");
 $direct->call("init", array("initparameter"));
 $direct->setParamMethod("setParams");
 
 $direct->processRequest($request);
 
-//$result = $direct->getResponse()->getResultAsArray();
 $result = $direct->getResponse()->asArray();
 
-error_log(var_export($result, true));
+// error_log(var_export($result, true));
+
+print_r($result);

@@ -15,9 +15,11 @@ $direct = new ExtDirect();
 
 $api = $direct->getApi();
 
-$api->setApplicationPath("Application");
+$api->setUrl("extDirect.php");
+$api->setApplicationPath("ExtDirectDemoApp");
 
 $jsonApi = $api->getApi();
 
-error_log(var_export($jsonApi, true));
+// error_log(var_export($jsonApi, true));
 
+print_r($jsonApi);

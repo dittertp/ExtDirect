@@ -16,14 +16,14 @@ $request2 = array();
 $request2['type'] = "rpc";
 $request2['tid'] = 2;
 $request2['action'] = "DemoApp";
-$request2['method'] = "getTree4";
+$request2['method'] = "getList";
 $request2['data'] = array("asd"=>"gfs");
 
 $request = array($request1, $request2);
 
 
 $direct = new ExtDirect();
-$direct->setApplicationPath("Application");
+$direct->setApplicationPath("ExtDirectDemoApp");
 $direct->call("init", array("initparameter"));
 $direct->setParamMethod("setParams");
 
@@ -31,4 +31,6 @@ $direct->processRequest($request);
 
 $result = $direct->getResponse()->asArray();
 
-error_log(var_export($result, true));
+// error_log(var_export($result, true));
+
+print_r($result);
