@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ExtDirect\Utils\Keys
+ * ExtDirect\Annotations\Interfaces\ClassInterface
  *
  * NOTICE OF LICENSE
  *
@@ -19,10 +19,12 @@
  * @link      http://www.appserver.io
  */
 
-namespace ExtDirect\Utils;
+namespace ExtDirect\Annotations\Interfaces;
+
+use ExtDirect\Annotations\Collections\RemotableCollection;
 
 /**
- * class Keys
+ * class ClassInterface
  *
  * @category  ExtDirect
  * @package   TechDivision_ExtDirect
@@ -32,35 +34,44 @@ namespace ExtDirect\Utils;
  * @link      http://www.appserver.io
  */
 
-class Keys
+interface ClassInterface
 {
     /**
-     * @var string
+     * Returns annotated name
+     *
+     * @return mixed
      */
-    const EXT_NAMESPACE = "Name";
+    public function getAnnotatedName();
 
     /**
-     * @var string
+     * Returns original class name
+     *
+     * @return mixed
      */
-    const EXT_URL = "url";
+    public function getClassName();
 
     /**
-     * @var string
+     * Sets the original class name
+     *
+     * @param string $className the class name
+     *
+     * @return mixed
      */
-    const EXT_ACTION = "actions";
+    public function setClassName($className);
 
     /**
-     * @var string
+     * Sets a collection containing all remotable methods
+     *
+     * @param RemotableCollection $methods the method collection
+     *
+     * @return mixed
      */
-    const EXT_API = "api";
+    public function setMethods(RemotableCollection $methods);
 
     /**
-     * @var string
+     * Returns collection containing all remotable methods
+     *
+     * @return RemotableCollection
      */
-    const EXT_HEADER = "REMOTING_API";
-
-    /**
-     * @var string
-     */
-    const CACHE_KEY = "extDirectCache";
+    public function getMethods();
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ExtDirect\Utils\Keys
+ * ExtDirect\Annotations\Collections\RemotableCollection
  *
  * NOTICE OF LICENSE
  *
@@ -19,10 +19,13 @@
  * @link      http://www.appserver.io
  */
 
-namespace ExtDirect\Utils;
+namespace ExtDirect\Annotations\Collections;
+
+use ExtDirect\Annotations\Interfaces\MethodInterface;
+use ExtDirect\Exceptions\ExtDirectException;
 
 /**
- * class Keys
+ * class RemotableCollection
  *
  * @category  ExtDirect
  * @package   TechDivision_ExtDirect
@@ -32,35 +35,22 @@ namespace ExtDirect\Utils;
  * @link      http://www.appserver.io
  */
 
-class Keys
+class RemotableCollection extends Collection implements \IteratorAggregate
 {
     /**
-     * @var string
+     * Add's a remotable instance to the collection
+     *
+     * @param MethodInterface $method the remotable instance
+     *
+     * @return void
+     * @throws ExtDirectException
      */
-    const EXT_NAMESPACE = "Name";
-
-    /**
-     * @var string
-     */
-    const EXT_URL = "url";
-
-    /**
-     * @var string
-     */
-    const EXT_ACTION = "actions";
-
-    /**
-     * @var string
-     */
-    const EXT_API = "api";
-
-    /**
-     * @var string
-     */
-    const EXT_HEADER = "REMOTING_API";
-
-    /**
-     * @var string
-     */
-    const CACHE_KEY = "extDirectCache";
+    public function add(MethodInterface $method)
+    {
+        if ($this->isUnique($method)) {
+            $this->collection[] = $method;
+        } else {
+            throw new ExtDirectException("Remotable methodname {$method->getAnnotatedName()} already exists, but have to be unique");
+        }
+    }
 }

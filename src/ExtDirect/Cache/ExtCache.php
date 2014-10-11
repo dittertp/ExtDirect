@@ -22,6 +22,7 @@
 namespace ExtDirect\Cache;
 
 use ExtDirect\Exceptions\ExtDirectException;
+use ExtDirect\Annotations\Collections\DirectCollection;
 use ExtDirect\Utils\Keys;
 
 /**
@@ -52,12 +53,32 @@ class ExtCache
         $this->key = $key;
     }
 
-    protected function getApi()
+    /**
+     * Returns ext api as array
+     *
+     * @return array
+     */
+    public function getApi()
     {
-        $api = apc_fetch($this->getKey());
-        if (!is_array($api)) {
-
+        $api = $this->get(Keys::EXT_API);
+        if (is_array($api)) {
+            return $api;
         }
+        error_log("api cache was not a array");
+    }
+
+    /**
+     * Checks if api is cached
+     *
+     * @return bool
+     */
+    public function isApiCached()
+    {
+        // if action array is cached return true
+        if ($this->get(Keys::EXT_API)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -71,7 +92,7 @@ class ExtCache
     }
 
     /**
-     * Checks if something is cached
+     * Checks if actions are cached
      *
      * @return bool
      */
@@ -107,7 +128,7 @@ class ExtCache
     /**
      * persists given value in cache
      *
-     * @param string $key the cache category (array key)
+     * @param string $key   the cache category (array key)
      * @param mixed  $value the value to be cached
      *
      * @return void
@@ -128,25 +149,37 @@ class ExtCache
      */
     public function getActions()
     {
-        return $this->get(Keys::EXT_ACTION);
+        $result = $this->get(Keys::EXT_ACTION);
+        if (is_string($result)) {
+            return unserialize($result);
+        }
+        error_log("cached actions not a string");
+        return false;
     }
 
     /**
      * persists list of actions in cache
      *
-     * @param string $actions the actions which should be cached
+     * @param DirectCollection $collection the actions which should be cached
      *
      * @return void
-     * @throws \ExtDirect\Exceptions\ExtDirectException
      */
-    public function cacheActions($actions)
+    public function cacheActions(DirectCollection $collection)
     {
-        error_log(print_r($actions,true));
-        if (!is_array($actions)) {
-            throw new ExtDirectException("unable to cache a non array value as actions");
-        }
-        $this->set(Keys::EXT_ACTION, $actions);
+        $serializedCollection = serialize($collection);
+
+        $this->set(Keys::EXT_ACTION, $serializedCollection);
     }
 
-
+    /**
+     * caches generated ext api
+     *
+     * @param array $api the api as array
+     *
+     * @return void
+     */
+    public function cacheApi(array $api)
+    {
+        $this->set(Keys::EXT_API, $api);
+    }
 }

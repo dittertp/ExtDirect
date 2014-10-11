@@ -1,5 +1,8 @@
-<?php
 
+
+### ExtApi Beispiel:
+
+``` php
 require ("../vendor/autoload.php");
 
 use ExtDirect\ExtDirect;
@@ -18,6 +21,4 @@ $api->setUrl("extDirect.php");
 $api->setApplicationPath("Application");
 
 $jsonApi = $api->getApi();
-
-error_log(var_export($jsonApi, true));
-
+```

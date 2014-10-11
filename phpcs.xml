@@ -8,11 +8,10 @@
     <description>appserver.io coding standard</description>
 
     <!-- Define global exclude patterns -->
-    <exclude-pattern type="relative">backup/*</exclude-pattern>
-    <exclude-pattern type="relative">search/*</exclude-pattern>
     <exclude-pattern type="relative">doc/*</exclude-pattern>
     <exclude-pattern type="relative">target/*</exclude-pattern>
     <exclude-pattern type="relative">tests/*</exclude-pattern>
+    <exclude-pattern type="relative">test/*</exclude-pattern>
     <exclude-pattern type="relative">vendor/*</exclude-pattern>
 
     <!-- Mainly use PSR2 coding standard -->

@@ -24,6 +24,7 @@ namespace ExtDirect;
 use ExtDirect\Cache\ExtCache;
 use ExtDirect\Request\Parameters;
 use ExtDirect\Annotations\Parser;
+use ExtDirect\Utils\Keys;
 
 /**
  * class AbstractExtDirect
@@ -42,12 +43,12 @@ abstract class AbstractExtDirect
     /**
      * @var string
      */
-    protected $appNamespace;
+    protected $applicationPath;
 
     /**
      * @var string
      */
-    const CACHE_KEY = "extDirectCache";
+    protected $appNamespace;
 
     /**
      * @var \ExtDirect\Cache\ExtCache
@@ -72,7 +73,7 @@ abstract class AbstractExtDirect
     public function __construct($useCache = true)
     {
         $this->setCacheState($useCache);
-        $this->extCache = new ExtCache(self::CACHE_KEY);
+        $this->extCache = new ExtCache(Keys::CACHE_KEY);
     }
 
     /**
@@ -135,28 +136,6 @@ abstract class AbstractExtDirect
     }
 
     /**
-     * Sets the target application namespace
-     *
-     * @param string $namespace the basic namespace to target classes
-     *
-     * @return void
-     */
-    public function setAppNamespace($namespace)
-    {
-        $this->appNamespace = $namespace;
-    }
-
-    /**
-     * Returns the basic application namespace
-     *
-     * @return string
-     */
-    protected function getAppNamespace()
-    {
-        return $this->appNamespace;
-    }
-
-    /**
      * Returns a array containing all remotable actions
      *
      * @return bool|void
@@ -178,13 +157,40 @@ abstract class AbstractExtDirect
         return $actions;
     }
 
+    /**
+     * Generates DirectCollection containing all remotable methods
+     *
+     * @return Annotations\Collections\DirectCollection
+     */
     protected function generateActions()
     {
         $parser = new Parser();
-        $parser->setNamespace($this->getAppNamespace());
+        $parser->setPath($this->getApplicationPath());
 
         $list = $parser->run();
 
         return $list;
+    }
+
+    /**
+     * Sets the application path
+     *
+     * @param string $applicationPath path to application
+     *
+     * @return void
+     */
+    public function setApplicationPath($applicationPath)
+    {
+        $this->applicationPath = $applicationPath;
+    }
+
+    /**
+     * Returns the application path
+     *
+     * @return string
+     */
+    public function getApplicationPath()
+    {
+        return $this->applicationPath;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ExtDirect\Utils\Keys
+ * ExtDirect\Annotations\Interfaces\MethodInterface
  *
  * NOTICE OF LICENSE
  *
@@ -19,10 +19,10 @@
  * @link      http://www.appserver.io
  */
 
-namespace ExtDirect\Utils;
+namespace ExtDirect\Annotations\Interfaces;
 
 /**
- * class Keys
+ * class MethodInterface
  *
  * @category  ExtDirect
  * @package   TechDivision_ExtDirect
@@ -32,35 +32,37 @@ namespace ExtDirect\Utils;
  * @link      http://www.appserver.io
  */
 
-class Keys
+interface MethodInterface
 {
     /**
-     * @var string
+     * Sets amount of method parameters if not set already
+     *
+     * @param integer $number number of required method parameters
+     *
+     * @return void
      */
-    const EXT_NAMESPACE = "Name";
+    public function setLenIfNotSet($number);
 
     /**
-     * @var string
+     * Sets the original method name
+     *
+     * @param string $method the original method name
+     *
+     * @return void
      */
-    const EXT_URL = "url";
+    public function setMethodName($method);
 
     /**
-     * @var string
+     * Returns remotable name
+     *
+     * @return string
      */
-    const EXT_ACTION = "actions";
+    public function getAnnotatedName();
 
     /**
-     * @var string
+     * Returns amount of required method parameters
+     *
+     * @return int|mixed
      */
-    const EXT_API = "api";
-
-    /**
-     * @var string
-     */
-    const EXT_HEADER = "REMOTING_API";
-
-    /**
-     * @var string
-     */
-    const CACHE_KEY = "extDirectCache";
+    public function getLen();
 }

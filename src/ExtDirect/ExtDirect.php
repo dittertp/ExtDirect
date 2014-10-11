@@ -234,12 +234,16 @@ class ExtDirect
         return $this->useCache;
     }
 
+    /**
+     * Returns ExtDirectApi instance
+     *
+     * @return ExtDirectApi
+     */
     public function getApi()
     {
         if ($this->api === null) {
-            $this->api = new ExtDirectApi();
+            $this->api = new ExtDirectApi($this->useCache());
         }
         return $this->api;
     }
-
 }

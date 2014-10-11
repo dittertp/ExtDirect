@@ -21,6 +21,10 @@
 
 namespace ExtDirect;
 
+use ExtDirect\Annotations\Collections\DirectCollection;
+use ExtDirect\Annotations\Interfaces\ClassInterface;
+use ExtDirect\Annotations\Interfaces\MethodInterface;
+
 /**
  * class ExtDirectApi
  *
@@ -37,7 +41,7 @@ class ExtDirectApi extends AbstractExtDirect
     /**
      * @var string
      */
-    protected $namespace;
+    protected $extNamespace;
 
     /**
      * @var array
@@ -56,9 +60,9 @@ class ExtDirectApi extends AbstractExtDirect
      *
      * @return void
      */
-    public function setNamespace($namespace)
+    public function setExtNamespace($namespace)
     {
-        $this->namespace = $namespace;
+        $this->extNamespace = $namespace;
     }
 
     /**
@@ -66,9 +70,9 @@ class ExtDirectApi extends AbstractExtDirect
      *
      * @return string
      */
-    public function getNamespace()
+    public function getExtNamespace()
     {
-        return $this->namespace;
+        return $this->extNamespace;
     }
 
     /**
@@ -94,14 +98,66 @@ class ExtDirectApi extends AbstractExtDirect
     }
 
     /**
-     * Sets the application path
+     * Generates complete ext api response as array
      *
-     * @param string $applicationPath path to application
-     *
-     * @return void
+     * @return array
      */
-    public function setApplicationPath($applicationPath)
+    protected function generateApi()
     {
-        $this->applicationPath = $applicationPath;
+        $api = array();
+        $api["url"] = $this->getUrl();
+        $api["type"] = "remoting";
+
+        $actionsArray = array();
+
+        /** @var DirectCollection $actions */
+        $actions = $this->getActions();
+
+        /** @var ClassInterface $class */
+        foreach ($actions as $class) {
+            $methodArray = array();
+            /** @var MethodInterface $method */
+            foreach ($class->getMethods() as $method) {
+                $methodArray[] = array("name" => $method->getAnnotatedName(), "len" => $method->getLen());
+            }
+            $actionsArray[$class->getAnnotatedName()] = $methodArray;
+        }
+
+        $api["actions"] = $actionsArray;
+
+        return $api;
+    }
+
+    /**
+     * Returns a array containing ext api response
+     *
+     * @return bool|void
+     */
+    public function getApiAsArray()
+    {
+        if ($this->useCache()) {
+
+            if ($this->getExtCache()->isApiCached()) {
+                return $this->getExtCache()->getApi();
+            }
+        }
+
+        $api = $this->generateApi();
+
+        if ($this->useCache()) {
+            $this->getExtCache()->cacheApi($api);
+        }
+
+        return $api;
+    }
+
+    /**
+     * Returns ext api as json string
+     *
+     * @return string
+     */
+    public function getApi()
+    {
+        return json_encode($this->getApiAsArray());
     }
 }

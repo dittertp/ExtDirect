@@ -24,18 +24,17 @@ class DemoApp
     }
 
     /**
-     * @Remotable(name = "getTree", len = 1)
+     * @Remotable(name = "getTree")
      */
     public function meopMoep() {
 
     }
 
     /**
-     * @Remotable(name = "getTreegb", len = 2)
+     * @Remotable(name = "getTree4")
      */
-    public function tutut()
+    public function tutut($hans, $dampf, $schuch)
     {
 
     }
-
-} 
+}

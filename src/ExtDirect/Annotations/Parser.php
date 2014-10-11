@@ -1,17 +1,42 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: dittertp
- * Date: 10.10.14
- * Time: 09:55
+ * ExtDirect\Annotations\Parser
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * PHP version 5
+ *
+ * @category  ExtDirect
+ * @package   TechDivision_ExtDirect
+ * @author    Philipp Dittert <pd@techdivision.com>
+ * @copyright 2014 TechDivision GmbH <info@techdivision.com>
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      http://www.appserver.io
  */
 
 namespace ExtDirect\Annotations;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use ExtDirect\Annotations\Collections\DirectCollection;
+use ExtDirect\Annotations\Collections\RemotableCollection;
 use ReflectionClass;
-use Application\DemoApp;
+
+/**
+ * class Parser
+ *
+ * @category  ExtDirect
+ * @package   TechDivision_ExtDirect
+ * @author    Philipp Dittert <pd@techdivision.com>
+ * @copyright 2014 TechDivision GmbH <info@techdivision.com>
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      http://www.appserver.io
+ */
 
 class Parser
 {
@@ -24,7 +49,7 @@ class Parser
     /**
      * @var string
      */
-    protected $namespace;
+    protected $path;
 
     /**
      * constructor
@@ -36,73 +61,98 @@ class Parser
     }
 
     /**
-     * sets the basic namespace which is used to scan after remotable classes/actions
+     * sets the basic path which is used to scan after remotable classes/actions
      *
-     * @param string $namespace base namespace
+     * @param string $path base path
      *
      * @return void
      */
-    public function setNamespace($namespace)
+    public function setPath($path)
     {
-        $this->namespace = $namespace;
+        $this->path = $path;
     }
 
     /**
-     * Returns application namespace
+     * Returns the relative application path
      *
      * @return string
      */
-    protected function getNamespace()
+    protected function getPath()
     {
-        return $this->namespace;
+        return $this->path;
     }
 
     /**
+     * Parses application directory for remotable methods
      *
+     * @return DirectCollection
      */
     public function run()
     {
         $list = $this->getClassList();
 
+        $directCollection = new DirectCollection();
+
         foreach ($list as $class) {
 
-            $this->validateClass($class);
+            $cl = $this->processClass($class);
+            if ($cl !== false) {
+                $directCollection->add($cl);
+            }
         }
+
+        return $directCollection;
+
     }
 
-    protected function validateClass($class)
+    /**
+     * checks if given class should be remotable
+     *
+     * @param string $class the class name to check
+     *
+     * @return bool|null|object
+     */
+    protected function processClass($class)
     {
-
-        $annotationReader = new AnnotationReader();
-
-        AnnotationRegistry::registerLoader('class_exists');
-
         if (!class_exists("\\".$class)) {
             error_log(" '{$class}' does not exist!");
         }
 
-        //Get class annotation
+        $annotationReader = new AnnotationReader();
+        AnnotationRegistry::registerLoader('class_exists');
+
         $reflectionClass = new ReflectionClass($class);
         $classAnnotation = $annotationReader->getClassAnnotation($reflectionClass, "ExtDirect\Annotations\Direct");
-        //$classAnnotations = current($classAnnotations);
 
         if ($classAnnotation instanceof \ExtDirect\Annotations\Direct) {
 
             $classAnnotation->setClassName($class);
 
-            error_log(var_export($classAnnotation,true));
+            // error_log(var_export($classAnnotation, true));
 
+            $methodCollection = new RemotableCollection();
             foreach ($reflectionClass->getMethods() as $reflectionMethod) {
 
                 $methodAnnotation = $annotationReader->getMethodAnnotation($reflectionMethod, "ExtDirect\Annotations\Remotable");
 
                 if ($methodAnnotation instanceof \ExtDirect\Annotations\Remotable) {
-                    error_log(var_export($methodAnnotation,true));
+                    $methodAnnotation->setLenIfNotSet($reflectionMethod->getNumberOfRequiredParameters());
+                    $methodAnnotation->setMethodName($reflectionMethod->getName());
+
+                    $methodCollection->add($methodAnnotation);
+
+                    //error_log($reflectionMethod->getNumberOfRequiredParameters());
+                    // error_log(var_export($methodAnnotation, true));
                 }
             }
 
+            $classAnnotation->setMethods($methodCollection);
+
+            return $classAnnotation;
 
         }
+
+        return false;
 
     }
 
@@ -113,7 +163,7 @@ class Parser
      */
     protected function getClassList()
     {
-        return $this->scanDir($this->getNamespace());
+        return $this->scanDir($this->getPath());
     }
 
     /**
@@ -175,13 +225,12 @@ class Parser
             $elementPath = $dir . DIRECTORY_SEPARATOR . $element;
 
             if (is_file($elementPath)) {
-                //$fileExtension = pathinfo($element, PATHINFO_EXTENSION);
 
                 $fileInfo = pathinfo($element);
                 if (in_array($fileInfo['extension'], $this->getAllowedFileExtensions())) {
-                    error_log(print_r($fileInfo,true));
-                    $result[] = $this->getNamespace() . "\\" . $fileInfo['filename'];
-                    //$result[] = $elementPath;
+
+                    $result[] = $this->getPath() . "\\" . $fileInfo['filename'];
+
                 }
             }
 
@@ -189,4 +238,4 @@ class Parser
 
         return $result;
     }
-} 
+}

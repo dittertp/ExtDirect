@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ExtDirect\Utils\Keys
+ * ExtDirect\Annotations\Collections\DirectCollection
  *
  * NOTICE OF LICENSE
  *
@@ -19,10 +19,14 @@
  * @link      http://www.appserver.io
  */
 
-namespace ExtDirect\Utils;
+namespace ExtDirect\Annotations\Collections;
+
+use ExtDirect\Annotations\Direct;
+use ExtDirect\Annotations\Interfaces\ClassInterface;
+use ExtDirect\Exceptions\ExtDirectException;
 
 /**
- * class Keys
+ * class DirectCollection
  *
  * @category  ExtDirect
  * @package   TechDivision_ExtDirect
@@ -32,35 +36,22 @@ namespace ExtDirect\Utils;
  * @link      http://www.appserver.io
  */
 
-class Keys
+class DirectCollection extends Collection implements \IteratorAggregate
 {
     /**
-     * @var string
+     * Add's a direct instance to the collection
+     *
+     * @param ClassInterface $class the direct instance
+     *
+     * @return void
+     * @throws ExtDirectException
      */
-    const EXT_NAMESPACE = "Name";
-
-    /**
-     * @var string
-     */
-    const EXT_URL = "url";
-
-    /**
-     * @var string
-     */
-    const EXT_ACTION = "actions";
-
-    /**
-     * @var string
-     */
-    const EXT_API = "api";
-
-    /**
-     * @var string
-     */
-    const EXT_HEADER = "REMOTING_API";
-
-    /**
-     * @var string
-     */
-    const CACHE_KEY = "extDirectCache";
+    public function add(ClassInterface $class)
+    {
+        if ($this->isUnique($class)) {
+            $this->collection[] = $class;
+        } else {
+            throw new ExtDirectException("Direct classname {$class->getAnnotatedName()} already exists, but have to be unique");
+        }
+    }
 }
