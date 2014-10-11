@@ -87,7 +87,7 @@ $result = $direct->getResponse()->asArray();
 ```
 
 
-Beispiel für Annotations
+### Beispiel für Annotations
 
 ``` php
 /**
@@ -111,3 +111,18 @@ class DemoAppController
         return array("success"=>true);
     }
 ```
+
+### Beispiel "Anwendung"
+
+DemoApp im autoloader registrieren
+
+``` js
+    "autoload": {
+        "psr-0": {
+            "ExtDirect": "src/",
+            "ExtDirectDemoApp": "Example/"
+        }
+    }
+```
+
+Danach ``composer update`` ausführen

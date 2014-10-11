@@ -6,7 +6,7 @@
  * Time: 10:44
  */
 
-namespace Application;
+namespace ExtDirectDemoApp;
 
 use ExtDirect\Annotations\Direct;
 use ExtDirect\Annotations\Remotable;
@@ -25,20 +25,21 @@ class DemoApp
     /**
      * @Remotable(name = "getTree")
      */
-    public function meopMoep() {
+    public function treeAction() {
         return array("success"=>true);
     }
 
     /**
-     * @Remotable(name = "getTree4")
+     * @Remotable(name = "getList")
      */
-    public function tutut()
+    public function listAction()
     {
         return array("success"=>true);
     }
 
     public function init($var)
     {
+        // example method which can called if you use "call" method on ExtDirect object
     }
 
     public function setParams($params)
