@@ -140,7 +140,7 @@ DemoApp im autoloader registrieren
     }
 ```
 
-Danach ``composer update`` ausführen. Die Beispiel-Scrippte können über folgende befehle ausgeführt werden
+Danach ``composer update`` ausführen. Die Beispiel-Scripte können über folgende Befehle ausgeführt werden:
 
 ``` bash
 cd Example
