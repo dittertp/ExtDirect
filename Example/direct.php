@@ -9,7 +9,7 @@ $request['type'] = "rpc";
 $request['tid'] = 1;
 $request['action'] = "DemoApp";
 $request['method'] = "getTree";
-$request['data'] = array("asd"=>"gfs");
+$request['data'] = array("demoKey"=>"demoValue");
 
 $direct = new ExtDirect();
 $direct->setApplicationPath("ExtDirectDemoApp");

@@ -9,17 +9,9 @@ require ("../vendor/autoload.php");
 
 use ExtDirect\ExtDirect;
 
-$request = array();
-$request['type'] = "rpc";
-$request['tid'] = 1;
-$request['action'] = "DemoApp";
-$request['method'] = "DemoAction";
-$request['data'] = array("asd"=>"gfs");
-
 $direct = new ExtDirect();
 
 $api = $direct->getApi();
-
 $api->setUrl("extDirect.php");
 $api->setApplicationPath("ExtDirectDemoApp");
 
@@ -44,7 +36,7 @@ $request['type'] = "rpc";
 $request['tid'] = 1;
 $request['action'] = "DemoApp";
 $request['method'] = "getTree";
-$request['data'] = array("asd"=>"gfs");
+$request['data'] = array("demoKey"=>"demoValue");
 
 $direct = new ExtDirect();
 $direct->setApplicationPath("ExtDirectDemoApp");
@@ -75,14 +67,14 @@ $request1['type'] = "rpc";
 $request1['tid'] = 1;
 $request1['action'] = "DemoApp";
 $request1['method'] = "getTree";
-$request1['data'] = array("asd"=>"gfs");
+$request1['data'] = array("demoKey"=>"demoValue");
 
 $request2 = array();
 $request2['type'] = "rpc";
 $request2['tid'] = 2;
 $request2['action'] = "DemoApp";
 $request2['method'] = "getList";
-$request2['data'] = array("asd"=>"gfs");
+$request2['data'] = array("demoKey"=>"demoValue");
 
 $request = array($request1, $request2);
 
