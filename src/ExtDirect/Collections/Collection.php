@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ExtDirect\Annotations\Collections\Collection
+ * ExtDirect\Collections\Collection
  *
  * NOTICE OF LICENSE
  *
@@ -19,7 +19,7 @@
  * @link      http://www.appserver.io
  */
 
-namespace ExtDirect\Annotations\Collections;
+namespace ExtDirect\Collections;
 
 /**
  * class Collection

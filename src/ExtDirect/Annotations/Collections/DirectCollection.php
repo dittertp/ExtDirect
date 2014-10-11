@@ -21,7 +21,7 @@
 
 namespace ExtDirect\Annotations\Collections;
 
-use ExtDirect\Annotations\Direct;
+use ExtDirect\Collections\Collection;
 use ExtDirect\Annotations\Interfaces\ClassInterface;
 use ExtDirect\Exceptions\ExtDirectException;
 

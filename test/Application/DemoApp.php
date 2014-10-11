@@ -13,7 +13,6 @@ use ExtDirect\Annotations\Remotable;
 
 /**
  * @Direct(name="DemoApp")
- * @Remotable(name = "getTree")
  */
 class DemoApp
 {
@@ -27,14 +26,22 @@ class DemoApp
      * @Remotable(name = "getTree")
      */
     public function meopMoep() {
-
+        return array("success"=>true);
     }
 
     /**
      * @Remotable(name = "getTree4")
      */
-    public function tutut($hans, $dampf, $schuch)
+    public function tutut()
     {
+        return array("success"=>true);
+    }
 
+    public function init($var)
+    {
+    }
+
+    public function setParams($params)
+    {
     }
 }

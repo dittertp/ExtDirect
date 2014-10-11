@@ -14,7 +14,7 @@ $request['data'] = array("asd"=>"gfs");
 $direct = new ExtDirect();
 
 $api = $direct->getApi();
-$api->setUrl("extDirect.php");
+
 $api->setApplicationPath("Application");
 
 $jsonApi = $api->getApi();

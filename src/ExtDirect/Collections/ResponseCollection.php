@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ExtDirect\Annotations\Collections\RemotableCollection
+ * ExtDirect\Collections\ResponseCollection
  *
  * NOTICE OF LICENSE
  *
@@ -19,14 +19,12 @@
  * @link      http://www.appserver.io
  */
 
-namespace ExtDirect\Annotations\Collections;
+namespace ExtDirect\Collections;
 
-use ExtDirect\Collections\Collection;
-use ExtDirect\Annotations\Interfaces\MethodInterface;
-use ExtDirect\Exceptions\ExtDirectException;
+use ExtDirect\ExtDirectResponse;
 
 /**
- * class RemotableCollection
+ * class ResponseCollection
  *
  * @category  ExtDirect
  * @package   TechDivision_ExtDirect
@@ -36,22 +34,35 @@ use ExtDirect\Exceptions\ExtDirectException;
  * @link      http://www.appserver.io
  */
 
-class RemotableCollection extends Collection implements \IteratorAggregate
+class ResponseCollection extends Collection implements \IteratorAggregate
 {
     /**
-     * Add's a remotable instance to the collection
+     * Add's a ext response instance to the collection
      *
-     * @param MethodInterface $method the remotable instance
+     * @param ExtDirectResponse $response the response instance
      *
      * @return void
-     * @throws ExtDirectException
      */
-    public function add(MethodInterface $method)
+    public function add(ExtDirectResponse $response)
     {
-        if ($this->isUnique($method)) {
-            $this->collection[] = $method;
-        } else {
-            throw new ExtDirectException("Remotable methodname {$method->getAnnotatedName()} already exists, but have to be unique");
+            $this->collection[] = $response;
+    }
+
+    /**
+     * Returns ext direct response as array
+     *
+     * @return array
+     */
+    public function asArray()
+    {
+
+        $result = array();
+
+        /** @var ExtDirectResponse $response */
+        foreach ($this->collection as $response) {
+            $result[] = $response->getResultAsArray();
         }
+
+        return $result;
     }
 }

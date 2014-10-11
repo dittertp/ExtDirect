@@ -21,6 +21,7 @@
 
 namespace ExtDirect;
 
+use ExtDirect\Collections\ResponseCollection;
 use ExtDirect\Exceptions\ExtDirectException;
 use ExtDirect\Request\Parameters;
 
@@ -59,6 +60,11 @@ class ExtDirect
     protected $callMethods = array();
 
     /**
+     * @var string
+     */
+    protected $paramMethod;
+
+    /**
      * @var ExtDirectResponse
      */
     protected $response;
@@ -86,6 +92,16 @@ class ExtDirect
     }
 
     /**
+     * Returns the application path
+     *
+     * @return string
+     */
+    protected function getApplicationPath()
+    {
+        return $this->applicationPath;
+    }
+
+    /**
      * Sets a application method and parameters to be called after construction
      *
      * @param string $key   application method to call
@@ -96,6 +112,28 @@ class ExtDirect
     public function call($key, array $value)
     {
         $this->callMethods[$key] = $value;
+    }
+
+    /**
+     * Set name of method which should get request data (postbody / "data" key in request array)
+     *
+     * @param string $paramMethod method name for parameter injection
+     *
+     * @return void
+     */
+    public function setParamMethod($paramMethod)
+    {
+        $this->paramMethod = $paramMethod;
+    }
+
+    /**
+     * Returns method which should get request data
+     *
+     * @return string
+     */
+    protected function getParamMethod()
+    {
+        return $this->paramMethod;
     }
 
     /**
@@ -117,24 +155,25 @@ class ExtDirect
      */
     public function processRequest(array $request)
     {
+        $responseCollection = new ResponseCollection();
         $result = array();
         try {
             if ($this->isBatchedRequest($request)) {
                 foreach ($request as $singleRequest) {
                     try {
-                        $result[] = $this->process($singleRequest);
+                        $responseCollection->add($this->process($singleRequest));
                     } catch (ExtDirectException $e) {
                            error_log("ExtDirect: error in batch request - {$e->getMessage()}");
                     }
                 }
             } else {
                 try {
-                    $result = $this->process($request);
+                    $responseCollection->add($this->process($request));
                 } catch (ExtDirectException $e) {
                     error_log("ExtDirect: error in request - {$e->getMessage()}");
                 }
             }
-            $this->setResponse($result);
+            $this->setResponse($responseCollection);
         } catch (\Exception $e) {
             error_log($e->getMessage());
         }
@@ -153,6 +192,7 @@ class ExtDirect
         $response = new ExtDirectResponse();
         $requestParameters = new Parameters();
         // parameter validation here
+        $request->setApplicationPath($this->getApplicationPath());
         $requestParameters->setParameters($requestParams);
 
         // inject parameters instance into request and response object to get access to all relevant params
@@ -161,6 +201,7 @@ class ExtDirect
 
         $request->injectResponse($response);
 
+        $request->setParamMethod($this->getParamMethod());
         $request->setMethodCalls($this->getMethodsToCall());
 
         $request->run();
@@ -172,11 +213,11 @@ class ExtDirect
     /**
      * Sets response instance
      *
-     * @param ExtDirectResponse $response the response instance
+     * @param ResponseCollection $response the response instance
      *
      * @return void
      */
-    protected function setResponse(ExtDirectResponse $response)
+    protected function setResponse(ResponseCollection $response)
     {
         $this->response = $response;
     }
@@ -184,7 +225,7 @@ class ExtDirect
     /**
      * Returns response instance
      *
-     * @return ExtDirectResponse
+     * @return ResponseCollection
      */
     public function getResponse()
     {
@@ -201,7 +242,7 @@ class ExtDirect
     protected function isBatchedRequest($request)
     {
         // if "action" is not available it has to be multiple Requests
-        if (!$request["action"]) {
+        if (!isset($request["action"])) {
             return true;
         }
         return false;

@@ -78,6 +78,16 @@ class Remotable implements MethodInterface
     }
 
     /**
+     * Returns original method name
+     *
+     * @return string
+     */
+    public function getMethodName()
+    {
+        return $this->methodName;
+    }
+
+    /**
      * Returns remotable name
      *
      * @return string

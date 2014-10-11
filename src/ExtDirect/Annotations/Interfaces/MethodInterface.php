@@ -53,6 +53,13 @@ interface MethodInterface
     public function setMethodName($method);
 
     /**
+     * Returns original method name
+     *
+     * @return string
+     */
+    public function getMethodName();
+
+    /**
      * Returns remotable name
      *
      * @return string

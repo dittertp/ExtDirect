@@ -42,11 +42,11 @@ class ExtDirectResponse extends AbstractExtDirect
     /**
      * Sets request result
      *
-     * @param array $result the request result as array
+     * @param mixed $result the request result as array
      *
      * @return void
      */
-    public function setResult(array $result)
+    public function setResult($result)
     {
         $this->result = $result;
     }
@@ -66,7 +66,7 @@ class ExtDirectResponse extends AbstractExtDirect
      *
      * @return array
      */
-    public function asArray()
+    public function getResultAsArray()
     {
         return $this->buildResponse();
     }

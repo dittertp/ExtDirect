@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ExtDirect\Annotations\Collections\CollectionIterator
+ * ExtDirect\Collections\CollectionIterator
  *
  * NOTICE OF LICENSE
  *
@@ -19,7 +19,7 @@
  * @link      http://www.appserver.io
  */
 
-namespace ExtDirect\Annotations\Collections;
+namespace ExtDirect\Collections;
 
 /**
  * class CollectionIterator
