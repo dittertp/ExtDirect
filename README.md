@@ -37,7 +37,7 @@ $request['type'] = "rpc";
 $request['tid'] = 1;
 $request['action'] = "DemoApp";
 $request['method'] = "getTree";
-$request['data'] = array("asd"=>"gfs");
+$request['data'] = array("demoData"=>"demoValue");
 
 $direct = new ExtDirect();
 $direct->setApplicationPath("Application");
@@ -64,14 +64,14 @@ $request1['type'] = "rpc";
 $request1['tid'] = 1;
 $request1['action'] = "DemoApp";
 $request1['method'] = "getTree";
-$request1['data'] = array("asd"=>"gfs");
+$request1['data'] = array("demoData"=>"demoValue");
 
 $request2 = array();
 $request2['type'] = "rpc";
 $request2['tid'] = 2;
 $request2['action'] = "DemoApp";
-$request2['method'] = "getTree4";
-$request2['data'] = array("asd"=>"gfs");
+$request2['method'] = "getList";
+$request2['data'] = array("demoData"=>"demoValue");
 
 $request = array($request1, $request2);
 
@@ -84,4 +84,30 @@ $direct->setParamMethod("setParams");
 $direct->processRequest($request);
 
 $result = $direct->getResponse()->asArray();
+```
+
+
+Beispiel für Annotations
+
+``` php
+/**
+ * @Direct(name="DemoApp")
+ */
+class DemoAppController
+{
+    /**
+     * @Remotable(name = "getTree")
+     */
+    public function TreeAction()
+    {
+        return array("success"=>true);
+    }
+
+    /**
+     * @Remotable(name = "getList")
+     */
+    public function ListAction()
+    {
+        return array("success"=>true);
+    }
 ```
