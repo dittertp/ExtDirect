@@ -142,11 +142,14 @@ DemoApp im autoloader registrieren
 
 Danach ``composer update`` ausführen. Die Beispiel-Scrippte können über folgende befehle ausgeführt werden
 
-``cd Example``
-``php api.php``
-``php direct.php``
-``php batchedDirect.php``
+``` bash
+cd Example
 
+php api.php
+php direct.php
+php batchedDirect.php
+
+```
 
 
 
