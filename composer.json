@@ -1,5 +1,5 @@
 {
-    "name": "dittertp/ExtDirect",
+    "name": "dittertp/extdirect",
     "description": "Sencha Extjs ExtDirect implementation",
     "keywords": ["sencha","extjs", "extdirect"],
     "type": "library",
