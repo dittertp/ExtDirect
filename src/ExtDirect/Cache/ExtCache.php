@@ -137,7 +137,7 @@ class ExtCache
     {
         $cache = apc_fetch($this->getKey());
 
-        $cache[Keys::EXT_ACTION] = $value;
+        $cache[$key] = $value;
 
         apc_store($this->getKey(), $cache);
     }
