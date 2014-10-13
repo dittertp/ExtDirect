@@ -39,6 +39,10 @@ use ExtDirect\Utils\Keys;
 
 abstract class AbstractExtDirect
 {
+    /**
+     * @var string
+     */
+    protected $applicationNameSpace;
 
     /**
      * @var string
@@ -166,6 +170,7 @@ abstract class AbstractExtDirect
     {
         $parser = new Parser();
         $parser->setPath($this->getApplicationPath());
+        $parser->setNameSpace($this->getApplicationNameSpace());
 
         $list = $parser->run();
 
@@ -192,5 +197,27 @@ abstract class AbstractExtDirect
     public function getApplicationPath()
     {
         return $this->applicationPath;
+    }
+
+    /**
+     * Sets the application namespace
+     *
+     * @param string $applicationNameSpace application's namespace
+     *
+     * @return void
+     */
+    public function setApplicationNameSpace($applicationNameSpace)
+    {
+        $this->applicationNameSpace = $applicationNameSpace;
+    }
+
+    /**
+     * Returns the application namespace
+     *
+     * @return string
+     */
+    public function getApplicationNameSpace()
+    {
+        return $this->applicationNameSpace;
     }
 }

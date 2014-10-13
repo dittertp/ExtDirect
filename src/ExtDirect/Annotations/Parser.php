@@ -40,6 +40,10 @@ use ReflectionClass;
 
 class Parser
 {
+    /**
+     * @var string
+     */
+    protected $nameSpace;
 
     /**
      * @var array
@@ -237,5 +241,27 @@ class Parser
         }
 
         return $result;
+    }
+
+    /**
+     * Sets the application namespace
+     *
+     * @param string $nameSpace the application namespace
+     *
+     * @return void
+     */
+    public function setNameSpace($nameSpace)
+    {
+        $this->nameSpace = $nameSpace;
+    }
+
+    /**
+     * Returns the application namespace
+     *
+     * @return string
+     */
+    protected function getNameSpace()
+    {
+        return $this->nameSpace;
     }
 }
