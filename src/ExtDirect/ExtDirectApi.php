@@ -24,6 +24,8 @@ namespace ExtDirect;
 use ExtDirect\Annotations\Collections\DirectCollection;
 use ExtDirect\Annotations\Interfaces\ClassInterface;
 use ExtDirect\Annotations\Interfaces\MethodInterface;
+use ExtDirect\Exceptions\ExtDirectException;
+use ExtDirect\Utils\Keys;
 
 /**
  * class ExtDirectApi
@@ -39,9 +41,9 @@ use ExtDirect\Annotations\Interfaces\MethodInterface;
 class ExtDirectApi extends AbstractExtDirect
 {
     /**
-     * @var string
+     * @var null|string
      */
-    protected $extNamespace;
+    protected $extNamespace = null;
 
     /**
      * @var array
@@ -85,6 +87,26 @@ class ExtDirectApi extends AbstractExtDirect
     public function setUrl($url)
     {
         $this->url = $url;
+    }
+
+    /**
+     * Builds ExtDirect Header
+     *
+     * @example Ext.ns('Ext.app'); Ext.app.REMOTING_API = {
+     *
+     * @return string
+     * @throws ExtDirectException
+     */
+    protected function buildHeader()
+    {
+        if ($this->getExtNamespace() === null) {
+            throw new ExtDirectException("Ext js Namespace not set");
+        }
+
+        // Example: 'Ext.ns("Ext.app"); Ext.app.REMOTING_API = ';
+        $var = 'Ext.ns("'.$this->getNameSpace().'"); '.$this->getNameSpace() . Keys::EXT_HEADER . ' = ';
+
+        return $var;
     }
 
     /**
@@ -159,5 +181,27 @@ class ExtDirectApi extends AbstractExtDirect
     public function getApi()
     {
         return json_encode($this->getApiAsArray());
+    }
+
+    /**
+     * Sets the ext js webapp namespace
+     *
+     * @param string $namespace the extjs webapp namespace
+     *
+     * @return void
+     */
+    public function setNameSpace($namespace)
+    {
+        $this->extNamespace = $namespace;
+    }
+
+    /**
+     * Returns the ext js webapp namespace
+     *
+     * @return string
+     */
+    public function getNameSpace()
+    {
+        return $this->extNamespace;
     }
 }
