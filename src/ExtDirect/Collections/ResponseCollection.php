@@ -65,4 +65,14 @@ class ResponseCollection extends Collection implements \IteratorAggregate
 
         return $result;
     }
+
+    /**
+     * Returns response as json
+     *
+     * @return string
+     */
+    public function asJson()
+    {
+        return json_encode($this->asArray());
+    }
 }
