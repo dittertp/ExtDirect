@@ -104,7 +104,7 @@ class ExtDirectApi extends AbstractExtDirect
         }
 
         // Example: 'Ext.ns("Ext.app"); Ext.app.REMOTING_API = ';
-        $var = 'Ext.ns("'.$this->getNameSpace().'"); '.$this->getNameSpace() . Keys::EXT_HEADER . ' = ';
+        $var = 'Ext.ns("'.$this->getNameSpace().'"); '.$this->getNameSpace() . "." . Keys::EXT_HEADER . ' = ';
 
         return $var;
     }
@@ -180,7 +180,8 @@ class ExtDirectApi extends AbstractExtDirect
      */
     public function getApi()
     {
-        return json_encode($this->getApiAsArray());
+        $header = $this->buildHeader();
+        return $header . json_encode($this->getApiAsArray());
     }
 
     /**

@@ -233,7 +233,7 @@ class Parser
                 $fileInfo = pathinfo($element);
                 if (in_array($fileInfo['extension'], $this->getAllowedFileExtensions())) {
 
-                    $result[] = $this->getPath() . "\\" . $fileInfo['filename'];
+                    $result[] = $this->getNameSpace() . "\\" . $fileInfo['filename'];
 
                 }
             }
