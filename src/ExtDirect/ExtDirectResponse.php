@@ -40,6 +40,13 @@ class ExtDirectResponse extends AbstractExtDirect
     protected $result;
 
     /**
+     * constructor to overwrite abstract constructor
+     */
+    public function __construct()
+    {
+    }
+
+    /**
      * Sets request result
      *
      * @param mixed $result the request result as array

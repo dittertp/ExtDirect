@@ -72,12 +72,17 @@ abstract class AbstractExtDirect
     /**
      * constructor
      *
-     * @param bool $useCache value if cache should used
+     * @param bool   $useCache             value if cache should used
+     * @param string $applicationPath      the application path
+     * @param string $applicationNameSpace the application namespace
      */
-    public function __construct($useCache = true)
+    public function __construct($useCache = true, $applicationPath = "", $applicationNameSpace = "")
     {
         $this->setCacheState($useCache);
         $this->extCache = new ExtCache(Keys::CACHE_KEY);
+
+        $this->setApplicationPath($applicationPath);
+        $this->setApplicationNameSpace($applicationNameSpace);
     }
 
     /**

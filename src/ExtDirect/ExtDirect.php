@@ -23,6 +23,7 @@ namespace ExtDirect;
 
 use ExtDirect\Collections\ResponseCollection;
 use ExtDirect\Exceptions\ExtDirectException;
+use ExtDirect\Exceptions\ExtDirectApplicationException;
 use ExtDirect\Request\Parameters;
 
 /**
@@ -38,6 +39,10 @@ use ExtDirect\Request\Parameters;
 
 class ExtDirect
 {
+    /**
+     * @var string
+     */
+    protected $applicationNameSpace;
 
     /**
      * @var ExtDirectApi
@@ -77,28 +82,6 @@ class ExtDirect
     public function __construct($useCache = true)
     {
         $this->setCacheState($useCache);
-    }
-
-    /**
-     * Sets Application path
-     *
-     * @param string $applicationPath the application path
-     *
-     * @return void
-     */
-    public function setApplicationPath($applicationPath)
-    {
-        $this->applicationPath = $applicationPath;
-    }
-
-    /**
-     * Returns the application path
-     *
-     * @return string
-     */
-    protected function getApplicationPath()
-    {
-        return $this->applicationPath;
     }
 
     /**
@@ -188,23 +171,39 @@ class ExtDirect
      */
     protected function process(array $requestParams)
     {
-        $request = new ExtDirectRequest($this->useCache());
+        $request = new ExtDirectRequest($this->useCache(), $this->getApplicationPath(), $this->getApplicationNameSpace());
         $response = new ExtDirectResponse();
         $requestParameters = new Parameters();
-        // parameter validation here
-        $request->setApplicationPath($this->getApplicationPath());
-        $requestParameters->setParameters($requestParams);
 
-        // inject parameters instance into request and response object to get access to all relevant params
-        $request->injectParameters($requestParameters);
-        $response->injectParameters($requestParameters);
+        try {
+            // parameter validation here
+            $request->setApplicationPath($this->getApplicationPath());
+            $requestParameters->setParameters($requestParams);
 
-        $request->injectResponse($response);
+            // inject parameters instance into request and response object to get access to all relevant params
+            $request->injectParameters($requestParameters);
+            $response->injectParameters($requestParameters);
 
-        $request->setParamMethod($this->getParamMethod());
-        $request->setMethodCalls($this->getMethodsToCall());
+            $request->injectResponse($response);
 
-        $request->run();
+            $request->setParamMethod($this->getParamMethod());
+            $request->setMethodCalls($this->getMethodsToCall());
+
+            $request->run();
+
+        } catch (ExtDirectApplicationException $e) {
+
+            $result = $e->getResponse();
+
+            if (!empty($result)) {
+                $response->setResult(array("success" => false, "message" => $e->getMessage(), "actions" => $result));
+            } else {
+                $response->setResult(array("success" => false, "message" => $e->getMessage()));
+            }
+
+        } catch (\Exception $e) {
+            $response->setResult(array("success" => false, "message" => $e->getMessage()));
+        }
 
         //return $response->asArray();
         return $response;
@@ -283,8 +282,52 @@ class ExtDirect
     public function getApi()
     {
         if ($this->api === null) {
-            $this->api = new ExtDirectApi($this->useCache());
+            $this->api = new ExtDirectApi($this->useCache(), $this->getApplicationPath(), $this->getApplicationNameSpace());
         }
         return $this->api;
+    }
+
+    /**
+     * Sets the application path
+     *
+     * @param string $applicationPath path to application
+     *
+     * @return void
+     */
+    public function setApplicationPath($applicationPath)
+    {
+        $this->applicationPath = $applicationPath;
+    }
+
+    /**
+     * Returns the application path
+     *
+     * @return string
+     */
+    public function getApplicationPath()
+    {
+        return $this->applicationPath;
+    }
+
+    /**
+     * Sets the application namespace
+     *
+     * @param string $applicationNameSpace application's namespace
+     *
+     * @return void
+     */
+    public function setApplicationNameSpace($applicationNameSpace)
+    {
+        $this->applicationNameSpace = $applicationNameSpace;
+    }
+
+    /**
+     * Returns the application namespace
+     *
+     * @return string
+     */
+    public function getApplicationNameSpace()
+    {
+        return $this->applicationNameSpace;
     }
 }
