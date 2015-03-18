@@ -5,18 +5,18 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * This source file is subject to version 3 of the GPL license,
+ * that is bundled with this package in the file LICENSE, and is
+ * available online at http://www.gnu.org/licenses/gpl.txt
  *
  * PHP version 5
  *
  * @category  ExtDirect
- * @package   TechDivision_ExtDirect
- * @author    Philipp Dittert <pd@techdivision.com>
- * @copyright 2014 TechDivision GmbH <info@techdivision.com>
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      http://www.appserver.io
+ * @package   ExtDirect
+ * @author    Philipp Dittert <philipp.dittert@gmail.com>
+ * @copyright 2015 Philipp Dittert
+ * @license   http://www.gnu.org/licenses/gpl.txt GNU General Public License, version 3 (GPL-3.0)
+ * @link      https://github.com/dittertp/ExtDirect
  */
 
 namespace ExtDirect\Annotations;
@@ -25,17 +25,18 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use ExtDirect\Annotations\Collections\DirectCollection;
 use ExtDirect\Annotations\Collections\RemotableCollection;
+use ExtDirect\Exceptions\ExtDirectException;
 use ReflectionClass;
 
 /**
  * class Parser
  *
  * @category  ExtDirect
- * @package   TechDivision_ExtDirect
- * @author    Philipp Dittert <pd@techdivision.com>
- * @copyright 2014 TechDivision GmbH <info@techdivision.com>
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      http://www.appserver.io
+ * @package   ExtDirect
+ * @author    Philipp Dittert <philipp.dittert@gmail.com>
+ * @copyright 2015 Philipp Dittert
+ * @license   http://www.gnu.org/licenses/gpl.txt GNU General Public License, version 3 (GPL-3.0)
+ * @link      https://github.com/dittertp/ExtDirect
  */
 
 class Parser
@@ -98,15 +99,12 @@ class Parser
         $directCollection = new DirectCollection();
 
         foreach ($list as $class) {
-
             $cl = $this->processClass($class);
             if ($cl !== false) {
                 $directCollection->add($cl);
             }
         }
-
         return $directCollection;
-
     }
 
     /**
@@ -115,11 +113,12 @@ class Parser
      * @param string $class the class name to check
      *
      * @return bool|null|object
+     * @throws ExtDirectException
      */
     protected function processClass($class)
     {
         if (!class_exists("\\".$class)) {
-            error_log(" '{$class}' does not exist!");
+            throw new ExtDirectException(" '{$class}' does not exist!");
         }
 
         $annotationReader = new AnnotationReader();
@@ -129,14 +128,10 @@ class Parser
         $classAnnotation = $annotationReader->getClassAnnotation($reflectionClass, "ExtDirect\Annotations\Direct");
 
         if ($classAnnotation instanceof \ExtDirect\Annotations\Direct) {
-
             $classAnnotation->setClassName($class);
-
-            // error_log(var_export($classAnnotation, true));
 
             $methodCollection = new RemotableCollection();
             foreach ($reflectionClass->getMethods() as $reflectionMethod) {
-
                 $methodAnnotation = $annotationReader->getMethodAnnotation($reflectionMethod, "ExtDirect\Annotations\Remotable");
 
                 if ($methodAnnotation instanceof \ExtDirect\Annotations\Remotable) {
@@ -144,9 +139,6 @@ class Parser
                     $methodAnnotation->setMethodName($reflectionMethod->getName());
 
                     $methodCollection->add($methodAnnotation);
-
-                    //error_log($reflectionMethod->getNumberOfRequiredParameters());
-                    // error_log(var_export($methodAnnotation, true));
                 }
             }
 
@@ -155,9 +147,7 @@ class Parser
             return $classAnnotation;
 
         }
-
         return false;
-
     }
 
     /**
@@ -195,7 +185,6 @@ class Parser
         $list = scandir($dir);
 
         foreach ($list as $element) {
-
             $elementPath = $dir . DIRECTORY_SEPARATOR . $element;
 
             if (is_file($elementPath)) {
@@ -225,21 +214,16 @@ class Parser
         $list = scandir($dir);
 
         foreach ($list as $element) {
-
             $elementPath = $dir . DIRECTORY_SEPARATOR . $element;
 
             if (is_file($elementPath)) {
-
                 $fileInfo = pathinfo($element);
                 if (in_array($fileInfo['extension'], $this->getAllowedFileExtensions())) {
-
                     $result[] = $this->getNameSpace() . "\\" . $fileInfo['filename'];
 
                 }
             }
-
         }
-
         return $result;
     }
 

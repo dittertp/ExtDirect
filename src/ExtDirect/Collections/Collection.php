@@ -5,18 +5,18 @@
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
+ * This source file is subject to version 3 of the GPL license,
+ * that is bundled with this package in the file LICENSE, and is
+ * available online at http://www.gnu.org/licenses/gpl.txt
  *
  * PHP version 5
  *
  * @category  ExtDirect
- * @package   TechDivision_ExtDirect
- * @author    Philipp Dittert <pd@techdivision.com>
- * @copyright 2014 TechDivision GmbH <info@techdivision.com>
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      http://www.appserver.io
+ * @package   ExtDirect
+ * @author    Philipp Dittert <philipp.dittert@gmail.com>
+ * @copyright 2015 Philipp Dittert
+ * @license   http://www.gnu.org/licenses/gpl.txt GNU General Public License, version 3 (GPL-3.0)
+ * @link      https://github.com/dittertp/ExtDirect
  */
 
 namespace ExtDirect\Collections;
@@ -25,11 +25,11 @@ namespace ExtDirect\Collections;
  * class Collection
  *
  * @category  ExtDirect
- * @package   TechDivision_ExtDirect
- * @author    Philipp Dittert <pd@techdivision.com>
- * @copyright 2014 TechDivision GmbH <info@techdivision.com>
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      http://www.appserver.io
+ * @package   ExtDirect
+ * @author    Philipp Dittert <philipp.dittert@gmail.com>
+ * @copyright 2015 Philipp Dittert
+ * @license   http://www.gnu.org/licenses/gpl.txt GNU General Public License, version 3 (GPL-3.0)
+ * @link      https://github.com/dittertp/ExtDirect
  */
 
 class Collection
@@ -61,7 +61,6 @@ class Collection
     protected function isUnique($instance)
     {
         foreach ($this->getCollection() as $entry) {
-
             if ($entry->getAnnotatedName() === $instance->getAnnotatedName()) {
                 return false;
             }
