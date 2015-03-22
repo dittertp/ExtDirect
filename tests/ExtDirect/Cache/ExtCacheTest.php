@@ -121,7 +121,7 @@ class ExtCacheTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($cache->isCached());
 
-        $this->assertFalse($cache->getActions());
+        $this->assertEmpty($cache->getActions());
     }
 
 
