@@ -7,7 +7,7 @@ php:
   - 5.4
 
 before_install:
-  - printf "\n" | pecl install apcu-beta
+  - printf "\n" | pecl install apcu-beta; echo 'apc.enable_cli=1' >> ./tests/travis/php.ini
 
 script:
   - ant composer-update
