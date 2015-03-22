@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/dittertp/ExtDirect.svg?branch=master)](https://travis-ci.org/dittertp/ExtDirect)
+[![Build Status](https://travis-ci.org/dittertp/ExtDirect.svg?branch=master)](https://travis-ci.org/dittertp/ExtDirect)[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dittertp/ExtDirect/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/dittertp/ExtDirect/?branch=master)
 
 ### ExtApi example:
 
