@@ -9,6 +9,6 @@ php:
 script:
   - ant composer-update
   - ant run-all-tests
-  
+
 notifications:
   email: false

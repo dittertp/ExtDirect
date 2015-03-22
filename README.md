@@ -20,7 +20,7 @@ $jsonApi = $api->getApi();
 print_r($jsonApi);
 ```
 
-### ExtDirect Request Beispiel:
+### ExtDirect request example:
 
 ``` php
 <?php
@@ -37,7 +37,9 @@ $request['method'] = "getTree";
 $request['data'] = array("demoKey"=>"demoValue");
 
 $direct = new ExtDirect();
+$direct->setApplicationNameSpace("ExtDirectDemoApp");
 $direct->setApplicationPath("ExtDirectDemoApp");
+
 $direct->call("init", array("initparameter"));
 $direct->setParamMethod("setParams");
 
@@ -48,7 +50,7 @@ $result = $direct->getResponse()->asArray();
 print_r($result);
 ```
 
-### ExtDirect Batched Request Beispiel:
+### ExtDirect batched request example:
 
 ``` php
 <?php
@@ -76,7 +78,9 @@ $request = array($request1, $request2);
 
 
 $direct = new ExtDirect();
+$direct->setApplicationNameSpace("ExtDirectDemoApp");
 $direct->setApplicationPath("ExtDirectDemoApp");
+
 $direct->call("init", array("initparameter"));
 $direct->setParamMethod("setParams");
 
@@ -88,7 +92,7 @@ print_r($result);
 ```
 
 
-### Beispiel für Annotations
+### example using annotations
 
 ``` php
 /**
@@ -113,9 +117,9 @@ class DemoAppController
     }
 ```
 
-### Beispiel "Anwendung"
+### example "application"
 
-DemoApp im autoloader registrieren
+add example demo to autoloader configuration in composer.json
 
 ``` js
     "autoload": {
@@ -126,7 +130,7 @@ DemoApp im autoloader registrieren
     }
 ```
 
-Danach ``composer update`` ausführen. Die Beispiel-Scripte können über folgende Befehle ausgeführt werden:
+and execute ``composer update``. Now your are able to run the scripts inside the ``Example`` folder
 
 ``` bash
 cd Example
