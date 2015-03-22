@@ -66,7 +66,7 @@ class Remotable implements MethodInterface
             throw new ExtDirectException("given method parameter count value is not numeric");
         }
 
-        $this->len = $count;
+        $this->len = (int)$count;
     }
 
     /**
