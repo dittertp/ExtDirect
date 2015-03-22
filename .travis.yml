@@ -7,7 +7,7 @@ php:
   - 5.4
 
 before_install:
-  - pecl install apcu
+  - pecl install apcu-beta
 
 script:
   - ant composer-update
