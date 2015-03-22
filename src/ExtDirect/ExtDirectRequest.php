@@ -147,6 +147,7 @@ class ExtDirectRequest extends AbstractExtDirect
      */
     protected function getAnnotationClassForAction($requestAction)
     {
+        /** @var array $actions */
         $actions = $this->getActions();
 
         /** @var ClassInterface $action */

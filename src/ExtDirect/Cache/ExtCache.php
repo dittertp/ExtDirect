@@ -143,9 +143,9 @@ class ExtCache
     }
 
     /**
-     * Returns array containing cached list of classes and actions which are remotable
+     * Returns array containing cached list of classes and actions which are remote able
      *
-     * @return bool
+     * @return array
      */
     public function getActions()
     {
@@ -153,7 +153,7 @@ class ExtCache
         if (is_string($result)) {
             return unserialize($result);
         }
-        return false;
+        return array();
     }
 
     /**
