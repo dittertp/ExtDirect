@@ -1,6 +1,6 @@
+[![Build Status](https://travis-ci.org/dittertp/ExtDirect.svg?branch=master)](https://travis-ci.org/dittertp/ExtDirect)
 
-
-### ExtApi Beispiel:
+### ExtApi example:
 
 ``` php
 <?php
@@ -10,14 +10,16 @@ require ("../vendor/autoload.php");
 use ExtDirect\ExtDirect;
 
 $direct = new ExtDirect();
+$direct->setApplicationNameSpace("ExtDirectDemoApp");
+$direct->setApplicationPath("ExtDirectDemoApp");
 
 $api = $direct->getApi();
 $api->setUrl("extDirect.php");
-$api->setApplicationPath("ExtDirectDemoApp");
+$api->setNameSpace("Ext.app");
 
 $jsonApi = $api->getApi();
 
-print_r($jsonApi);
+echo $jsonApi;
 ```
 
 ### ExtDirect request example:
