@@ -90,6 +90,16 @@ class ExtDirectApi extends AbstractExtDirect
     }
 
     /**
+     * Returns ext direct url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
      * Builds ExtDirect Header
      *
      * @example Ext.ns('Ext.app'); Ext.app.REMOTING_API = {
@@ -107,16 +117,6 @@ class ExtDirectApi extends AbstractExtDirect
         $var = 'Ext.ns("'.$this->getNameSpace().'"); '.$this->getNameSpace() . "." . Keys::EXT_HEADER . ' = ';
 
         return $var;
-    }
-
-    /**
-     * Returns ext direct url
-     *
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
     }
 
     /**

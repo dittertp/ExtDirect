@@ -94,12 +94,7 @@ abstract class AbstractExtDirect
      */
     protected function setCacheState($useCache)
     {
-        if (is_bool($useCache)) {
-            $this->useCache = $useCache;
-        } else {
-            error_log("ExtDirect: useCache not boolean - enabling cache by default");
-            $this->useCache = true;
-        }
+        $this->useCache = $useCache;
     }
 
     /**

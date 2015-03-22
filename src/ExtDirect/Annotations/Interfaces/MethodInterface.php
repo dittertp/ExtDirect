@@ -41,7 +41,7 @@ interface MethodInterface
      *
      * @return void
      */
-    public function setLenIfNotSet($number);
+    public function setLen($number);
 
     /**
      * Sets the original method name

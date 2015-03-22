@@ -22,6 +22,7 @@
 namespace ExtDirect\Annotations;
 
 use ExtDirect\Annotations\Interfaces\MethodInterface;
+use ExtDirect\Exceptions\ExtDirectException;
 
 /**
  * class Remotable
@@ -42,9 +43,9 @@ class Remotable implements MethodInterface
     public $name;
 
     /**
-     * @var mixed
+     * @var int
      */
-    public $len = null;
+    public $len = 0;
 
     /**
      * @var string
@@ -57,12 +58,15 @@ class Remotable implements MethodInterface
      * @param integer $number number of required method parameters
      *
      * @return void
+     * @throws ExtDirectException
      */
-    public function setLenIfNotSet($number)
+    public function setLen($number)
     {
-        if ($this->len === null) {
-            $this->len = $number;
+        if (!is_numeric($number)) {
+            throw new ExtDirectException("given method parameter count value is not numeric");
         }
+
+        $this->len = $number;
     }
 
     /**
@@ -100,16 +104,10 @@ class Remotable implements MethodInterface
     /**
      * Returns amount of required method parameters
      *
-     * @return int|mixed
+     * @return int
      */
     public function getLen()
     {
-        if ($this->len === null) {
-            $len = 0;
-        } else {
-            $len = $this->len;
-        }
-
-        return $len;
+        return $this->len;
     }
 }

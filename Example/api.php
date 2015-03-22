@@ -5,13 +5,13 @@ require ("../vendor/autoload.php");
 use ExtDirect\ExtDirect;
 
 $direct = new ExtDirect();
+$direct->setApplicationNameSpace("ExtDirectDemoApp");
+$direct->setApplicationPath("ExtDirectDemoApp");
 
 $api = $direct->getApi();
 $api->setUrl("extDirect.php");
-$api->setApplicationPath("ExtDirectDemoApp");
+$api->setNameSpace("Ext.app");
 
 $jsonApi = $api->getApi();
 
-// error_log(var_export($jsonApi, true));
-
-print_r($jsonApi);
+echo $jsonApi;

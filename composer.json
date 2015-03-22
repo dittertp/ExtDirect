@@ -3,7 +3,7 @@
     "description": "Sencha Extjs ExtDirect implementation",
     "keywords": ["sencha","extjs", "extdirect"],
     "type": "library",
-    "license": "Open Software License (OSL 3.0)",
+    "license": "GNU General Public License, version 3 (GPL-3.0)",
     "authors": [
         {
             "name": "Philipp Dittert"
@@ -13,10 +13,19 @@
     {
         "doctrine/common": "*"
     },
+    "require-dev" : {
+      "php" : ">=5.4.0",
+      "phpmd/phpmd" : "2.1.*",
+      "phploc/phploc" : "2.0.*",
+      "pdepend/pdepend" : "2.0.*",
+      "phpunit/phpunit" : "4.4.*",
+      "sebastian/phpcpd" : "2.0.*",
+      "squizlabs/php_codesniffer": "2.*"
+    },
     "autoload": {
-        "psr-0": {
-            "ExtDirect": "src/",
-            "ExtDirectDemoApp": "Example/"
+      "psr-0": {
+        "ExtDirect": "src/",
+        "ExtDirectDemoApp": "Example/"
         }
     }
 }

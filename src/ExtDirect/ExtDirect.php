@@ -139,27 +139,14 @@ class ExtDirect
     public function processRequest(array $request)
     {
         $responseCollection = new ResponseCollection();
-        $result = array();
-        try {
-            if ($this->isBatchedRequest($request)) {
-                foreach ($request as $singleRequest) {
-                    try {
-                        $responseCollection->add($this->process($singleRequest));
-                    } catch (ExtDirectException $e) {
-                           error_log("ExtDirect: error in batch request - {$e->getMessage()}");
-                    }
-                }
-            } else {
-                try {
-                    $responseCollection->add($this->process($request));
-                } catch (ExtDirectException $e) {
-                    error_log("ExtDirect: error in request - {$e->getMessage()}");
-                }
+        if ($this->isBatchedRequest($request)) {
+            foreach ($request as $singleRequest) {
+                $responseCollection->add($this->process($singleRequest));
             }
-            $this->setResponse($responseCollection);
-        } catch (\Exception $e) {
-            error_log($e->getMessage());
+        } else {
+            $responseCollection->add($this->process($request));
         }
+        $this->setResponse($responseCollection);
     }
 
     /**
@@ -258,7 +245,7 @@ class ExtDirect
         if (is_bool($useCache)) {
             $this->useCache = $useCache;
         } else {
-            error_log("ExtDirect: useCache not boolean - enabling cache by default");
+            // every invalid param would activate cache
             $this->useCache = true;
         }
     }

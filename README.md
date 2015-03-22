@@ -17,8 +17,6 @@ $api->setApplicationPath("ExtDirectDemoApp");
 
 $jsonApi = $api->getApi();
 
-// error_log(var_export($jsonApi, true));
-
 print_r($jsonApi);
 ```
 
@@ -46,8 +44,6 @@ $direct->setParamMethod("setParams");
 $direct->processRequest($request);
 
 $result = $direct->getResponse()->asArray();
-
-// error_log(var_export($result, true));
 
 print_r($result);
 ```
@@ -87,8 +83,6 @@ $direct->setParamMethod("setParams");
 $direct->processRequest($request);
 
 $result = $direct->getResponse()->asArray();
-
-// error_log(var_export($result, true));
 
 print_r($result);
 ```

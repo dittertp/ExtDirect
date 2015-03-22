@@ -87,7 +87,7 @@ class Direct implements ClassInterface
     }
 
     /**
-     * Sets a collection containing all remotable methods
+     * Sets a collection containing all remote able methods
      *
      * @param RemotableCollection $methods the method collection
      *

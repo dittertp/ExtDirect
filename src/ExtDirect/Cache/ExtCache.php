@@ -56,7 +56,7 @@ class ExtCache
     /**
      * Returns ext api as array
      *
-     * @return array
+     * @return array|bool
      */
     public function getApi()
     {
@@ -64,7 +64,7 @@ class ExtCache
         if (is_array($api)) {
             return $api;
         }
-        error_log("api cache was not a array");
+        return false;
     }
 
     /**
@@ -153,7 +153,6 @@ class ExtCache
         if (is_string($result)) {
             return unserialize($result);
         }
-        error_log("cached actions not a string");
         return false;
     }
 

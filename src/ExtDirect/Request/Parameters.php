@@ -200,13 +200,11 @@ class Parameters
             if (isset($request[$param])) {
                 // build setter method
                 $dynamicMethod = "set" . ucfirst($param);
-
                 if (method_exists($this, $dynamicMethod)) {
                     $this->$dynamicMethod($request[$param]);
                 } else {
                     throw new ExtDirectException("Method for required parameter '{$param}' not implemented");
                 }
-
             } else {
                 throw new ExtDirectException("Required parameter '{$param}' is missing");
             }

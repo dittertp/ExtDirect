@@ -12,14 +12,14 @@ $request['method'] = "getTree";
 $request['data'] = array("demoKey"=>"demoValue");
 
 $direct = new ExtDirect();
+$direct->setApplicationNameSpace("ExtDirectDemoApp");
 $direct->setApplicationPath("ExtDirectDemoApp");
+
 $direct->call("init", array("initparameter"));
 $direct->setParamMethod("setParams");
 
 $direct->processRequest($request);
 
 $result = $direct->getResponse()->asArray();
-
-// error_log(var_export($result, true));
 
 print_r($result);

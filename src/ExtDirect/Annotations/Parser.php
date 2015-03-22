@@ -135,7 +135,7 @@ class Parser
                 $methodAnnotation = $annotationReader->getMethodAnnotation($reflectionMethod, "ExtDirect\Annotations\Remotable");
 
                 if ($methodAnnotation instanceof \ExtDirect\Annotations\Remotable) {
-                    $methodAnnotation->setLenIfNotSet($reflectionMethod->getNumberOfRequiredParameters());
+                    $methodAnnotation->setLen($reflectionMethod->getNumberOfRequiredParameters());
                     $methodAnnotation->setMethodName($reflectionMethod->getName());
 
                     $methodCollection->add($methodAnnotation);
@@ -171,37 +171,6 @@ class Parser
     }
 
     /**
-     * recursive method to scan directory
-     * NOT USED AT THE MOMENT
-     *
-     * @param string $dir dir to scan
-     *
-     * @return array
-     */
-    protected function scanDirRecursive($dir)
-    {
-        $result = array();
-        $dirResult = array();
-        $list = scandir($dir);
-
-        foreach ($list as $element) {
-            $elementPath = $dir . DIRECTORY_SEPARATOR . $element;
-
-            if (is_file($elementPath)) {
-                $fileExtension = pathinfo($element, PATHINFO_EXTENSION);
-                if (in_array($fileExtension, $this->getAllowedFileExtensions())) {
-                    $result[] = $elementPath;
-                }
-            }
-
-            if (is_dir($elementPath)) {
-                $dirResult = $this->scanDir($elementPath);
-            }
-        }
-        return array_merge($result, $dirResult);
-    }
-
-    /**
      * method to scan directory
      *
      * @param string $dir dir to scan
@@ -211,7 +180,7 @@ class Parser
     protected function scanDir($dir)
     {
         $result = array();
-        $list = scandir($dir);
+        $list = $this->scanDirExec($dir);
 
         foreach ($list as $element) {
             $elementPath = $dir . DIRECTORY_SEPARATOR . $element;
@@ -220,11 +189,22 @@ class Parser
                 $fileInfo = pathinfo($element);
                 if (in_array($fileInfo['extension'], $this->getAllowedFileExtensions())) {
                     $result[] = $this->getNameSpace() . "\\" . $fileInfo['filename'];
-
                 }
             }
         }
         return $result;
+    }
+
+    /**
+     * scans given directory
+     *
+     * @param string $dir the dir to scan
+     *
+     * @return array
+     */
+    protected function scanDirExec($dir)
+    {
+        return scandir($dir);
     }
 
     /**
