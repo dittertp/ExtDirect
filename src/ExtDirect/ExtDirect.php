@@ -22,7 +22,6 @@
 namespace ExtDirect;
 
 use ExtDirect\Collections\ResponseCollection;
-use ExtDirect\Exceptions\ExtDirectException;
 use ExtDirect\Exceptions\ExtDirectApplicationException;
 use ExtDirect\Request\Parameters;
 

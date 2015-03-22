@@ -114,7 +114,7 @@ class ExtDirectApi extends AbstractExtDirect
         }
 
         // Example: 'Ext.ns("Ext.app"); Ext.app.REMOTING_API = ';
-        $var = 'Ext.ns("'.$this->getNameSpace().'"); '.$this->getNameSpace() . "." . Keys::EXT_HEADER . ' = ';
+        $var = 'Ext.ns("' . $this->getNameSpace() . '"); ' . $this->getNameSpace() . "." . Keys::EXT_HEADER . ' = ';
 
         return $var;
     }

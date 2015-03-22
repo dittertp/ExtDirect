@@ -117,7 +117,7 @@ class Parser
      */
     protected function processClass($class)
     {
-        if (!class_exists("\\".$class)) {
+        if (!class_exists("\\" . $class)) {
             throw new ExtDirectException(" '{$class}' does not exist!");
         }
 
