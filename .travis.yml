@@ -7,10 +7,12 @@ php:
 
 before_install:
   - printf "\n" | pecl install apcu-beta; echo 'apc.enable_cli=1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - wget https://scrutinizer-ci.com/ocular.phar
 
 script:
   - ant composer-update
   - ant run-all-tests
+  - php ocular.phar code-coverage:upload --format=php-clover $TRAVIS_BUILD_DIR/target/reports/unit/clover.xml
 
 notifications:
   email: false
