@@ -55,18 +55,18 @@ class Remotable implements MethodInterface
     /**
      * Sets amount of method parameters if not set already
      *
-     * @param integer $number number of required method parameters
+     * @param integer $count number of required method parameters
      *
      * @return void
      * @throws ExtDirectException
      */
-    public function setLen($number)
+    public function setLen($count)
     {
-        if (!is_numeric($number)) {
+        if (!is_numeric($count)) {
             throw new ExtDirectException("given method parameter count value is not numeric");
         }
 
-        $this->len = $number;
+        $this->len = $count;
     }
 
     /**

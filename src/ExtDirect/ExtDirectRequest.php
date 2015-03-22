@@ -113,16 +113,8 @@ class ExtDirectRequest extends AbstractExtDirect
 
         $methodName = $method->getMethodName();
 
-        // if (!class_exists($className)) {
-        //    throw new ExtDirectException("Class '{$className}' could not be loaded");
-        // }
-
         $reflectionClass = new \ReflectionClass($className);
         $controllerInstance = $reflectionClass->newInstance();
-
-        // if (!$reflectionClass->hasMethod($methodName)) {
-        //     throw new ExtDirectException("Method '{$methodName}' not available in class '{$className}'");
-        // }
 
         // postbody parameter injection
         $paramMethod = $this->getParamMethod();

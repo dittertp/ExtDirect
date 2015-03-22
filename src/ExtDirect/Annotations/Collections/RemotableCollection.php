@@ -39,9 +39,9 @@ use ExtDirect\Exceptions\ExtDirectException;
 class RemotableCollection extends Collection implements \IteratorAggregate
 {
     /**
-     * Add's a remotable instance to the collection
+     * Adds a remote able instance to the collection
      *
-     * @param MethodInterface $method the remotable instance
+     * @param MethodInterface $method the remote able instance
      *
      * @return void
      * @throws ExtDirectException

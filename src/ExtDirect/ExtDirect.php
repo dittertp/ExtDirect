@@ -70,7 +70,7 @@ class ExtDirect
     protected $paramMethod;
 
     /**
-     * @var ExtDirectResponse
+     * @var ResponseCollection
      */
     protected $response;
 
@@ -191,7 +191,6 @@ class ExtDirect
             $response->setResult(array("success" => false, "message" => $e->getMessage()));
         }
 
-        //return $response->asArray();
         return $response;
     }
 

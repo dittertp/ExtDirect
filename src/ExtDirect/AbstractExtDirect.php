@@ -140,9 +140,9 @@ abstract class AbstractExtDirect
     }
 
     /**
-     * Returns a array containing all remotable actions
+     * Returns a array containing all remote able actions
      *
-     * @return bool|void
+     * @return array
      */
     public function getActions()
     {
@@ -162,7 +162,7 @@ abstract class AbstractExtDirect
     }
 
     /**
-     * Generates DirectCollection containing all remotable methods
+     * Generates DirectCollection containing all remote able methods
      *
      * @return Annotations\Collections\DirectCollection
      */

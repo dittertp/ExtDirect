@@ -39,7 +39,7 @@ use ExtDirect\Exceptions\ExtDirectException;
 class DirectCollection extends Collection implements \IteratorAggregate
 {
     /**
-     * Add's a direct instance to the collection
+     * Adds a direct instance to the collection
      *
      * @param ClassInterface $class the direct instance
      *

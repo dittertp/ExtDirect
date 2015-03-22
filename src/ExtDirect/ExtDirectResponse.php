@@ -49,7 +49,7 @@ class ExtDirectResponse extends AbstractExtDirect
     /**
      * Sets request result
      *
-     * @param mixed $result the request result as array
+     * @param array $result the request result as array
      *
      * @return void
      */
