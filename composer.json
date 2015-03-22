@@ -3,7 +3,7 @@
     "description": "Sencha Extjs ExtDirect implementation",
     "keywords": ["sencha","extjs", "extdirect"],
     "type": "library",
-    "license": "GNU General Public License, version 3 (GPL-3.0)",
+    "license": "GPL-3.0+",
     "authors": [
         {
             "name": "Philipp Dittert"
