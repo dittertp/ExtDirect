@@ -27,6 +27,7 @@ use ExtDirect\Annotations\Collections\DirectCollection;
 use ExtDirect\Annotations\Collections\RemotableCollection;
 use ExtDirect\Exceptions\ExtDirectException;
 use ReflectionClass;
+use ExtDirect\Annotations\Interfaces\ClassInterface;
 
 /**
  * class Parser
@@ -112,12 +113,12 @@ class Parser
      *
      * @param string $class the class name to check
      *
-     * @return bool|null|object
+     * @return bool|ClassInterface
      * @throws ExtDirectException
      */
     protected function processClass($class)
     {
-        if (!class_exists("\\" . $class)) {
+        if (!class_exists('\\' . $class)) {
             throw new ExtDirectException(" '{$class}' does not exist!");
         }
 
@@ -125,19 +126,17 @@ class Parser
         AnnotationRegistry::registerLoader('class_exists');
 
         $reflectionClass = new ReflectionClass($class);
-        $classAnnotation = $annotationReader->getClassAnnotation($reflectionClass, "ExtDirect\Annotations\Direct");
+        $classAnnotation = $annotationReader->getClassAnnotation($reflectionClass, 'ExtDirect\Annotations\Direct');
 
         if ($classAnnotation instanceof \ExtDirect\Annotations\Direct) {
             $classAnnotation->setClassName($class);
 
             $methodCollection = new RemotableCollection();
             foreach ($reflectionClass->getMethods() as $reflectionMethod) {
-                $methodAnnotation = $annotationReader->getMethodAnnotation($reflectionMethod, "ExtDirect\Annotations\Remotable");
+                $methodAnnotation = $annotationReader->getMethodAnnotation($reflectionMethod, 'ExtDirect\Annotations\Remotable');
 
                 if ($methodAnnotation instanceof \ExtDirect\Annotations\Remotable) {
-                    $methodAnnotation->setLen($reflectionMethod->getNumberOfRequiredParameters());
                     $methodAnnotation->setMethodName($reflectionMethod->getName());
-
                     $methodCollection->add($methodAnnotation);
                 }
             }
@@ -145,7 +144,6 @@ class Parser
             $classAnnotation->setMethods($methodCollection);
 
             return $classAnnotation;
-
         }
         return false;
     }

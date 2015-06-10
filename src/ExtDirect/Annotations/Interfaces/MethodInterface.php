@@ -35,15 +35,6 @@ namespace ExtDirect\Annotations\Interfaces;
 interface MethodInterface
 {
     /**
-     * Sets amount of method parameters if not set already
-     *
-     * @param integer $number number of required method parameters
-     *
-     * @return void
-     */
-    public function setLen($number);
-
-    /**
      * Sets the original method name
      *
      * @param string $method the original method name
